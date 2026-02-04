@@ -10,11 +10,13 @@
 	let age = '';
 	let editingId = null;
 
+	const USERS_ENDPOINT = '/api/users';
+
 	const loadUsers = async () => {
 		loading = true;
 		error = '';
 		try {
-			const res = await fetch('/api/users');
+			const res = await fetch(USERS_ENDPOINT);
 			if (!res.ok) throw new Error('Failed to load users');
 			users = await res.json();
 		} catch (err) {
@@ -45,7 +47,7 @@
 		}
 
 		try {
-			const res = await fetch(editingId ? `/api/users/${editingId}` : '/api/users', {
+			const res = await fetch(editingId ? `${USERS_ENDPOINT}/${editingId}` : USERS_ENDPOINT, {
 				method: editingId ? 'PUT' : 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(payload)
@@ -68,7 +70,7 @@
 	const deleteUser = async (id) => {
 		error = '';
 		try {
-			const res = await fetch(`/api/users/${id}`, { method: 'DELETE' });
+			const res = await fetch(`${USERS_ENDPOINT}/${id}`, { method: 'DELETE' });
 			if (!res.ok) throw new Error('Delete failed');
 			await loadUsers();
 		} catch (err) {
