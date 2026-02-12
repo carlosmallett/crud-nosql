@@ -2,17 +2,17 @@ import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema(
 	{
-		firstName: {
+		university: {
       type: String,
       required: true,
       trim: true
     },
-		lastName: {
-      type: String,
+		pointDifferential: {
+      type: Number,
       required: true,
       trim: true
     },
-		age: {
+		championshipYear: {
       type: Number,
       required: true,
       min: 0

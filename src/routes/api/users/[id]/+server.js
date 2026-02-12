@@ -4,10 +4,10 @@ import User from '$lib/server/models/User';
 
 export async function PUT({ params, request }) {
 	await connectToDatabase();
-	const { firstName, lastName, age } = await request.json();
+	const { university, pointDifferential, championshipYear } = await request.json();
 	const user = await User.findByIdAndUpdate(
 		params.id,
-		{ firstName, lastName, age },
+		{ university, pointDifferential, championshipYear },
 		{ new: true, runValidators: true }
 	).lean();
 

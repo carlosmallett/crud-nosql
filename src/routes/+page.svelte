@@ -6,9 +6,9 @@
 	let loading = false;
 	let error = '';
 
-	let firstName = '';
-	let lastName = '';
-	let age = '';
+	let university = '';
+	let pointDifferential = '';
+	let championshipYear = '';
 	let editingId = null;
 	let chartCanvas;
 	let chart;
@@ -17,17 +17,17 @@
 
 	const renderChart = () => {
 		if (!chartCanvas) return;
-		const labels = users.map((user) => `${user.firstName} ${user.lastName}`.trim());
-		const data = users.map((user) => Number(user.age) || 0);
+		const labels = users.map((user) => `${user.university}`.trim());
+		const data = users.map((user) => Number(user.pointDifferential) || 0);
 
 		if (!chart) {
 			chart = new Chart(chartCanvas, {
-				type: 'bar',
+				type: 'pie',
 				data: {
 					labels,
 					datasets: [
 						{
-							label: 'Age',
+							label: 'Point Differential',
 							data,
 							backgroundColor: [
 								'rgb(255, 99, 132)',
@@ -51,7 +51,7 @@
             },
             title: {
               display: true,
-              text: 'Users Ages'
+              text: 'Championship Point Differentials by University',
             }
           }
 				}
@@ -80,22 +80,22 @@
 	};
 
 	const resetForm = () => {
-		firstName = '';
-		lastName = '';
-		age = '';
+		university = '';
+		pointDifferential = '';
+		championshipYear = '';
 		editingId = null;
 	};
 
 	const submitForm = async () => {
 		error = '';
 		const payload = {
-			firstName: firstName.trim(),
-			lastName: lastName.trim(),
-			age: Number(age)
+			university: university.trim(),
+			pointDifferential: Number(pointDifferential),
+			championshipYear: Number(championshipYear)
 		};
 
-		if (!payload.firstName || !payload.lastName || Number.isNaN(payload.age)) {
-			error = 'Please enter first name, last name, and age.';
+		if (!payload.university || Number.isNaN(payload.pointDifferential) || Number.isNaN(payload.championshipYear)) {
+			error = 'Please enter university, point differential, and championship year.';
 			return;
 		}
 
@@ -114,9 +114,9 @@
 	};
 
 	const editUser = (user) => {
-		firstName = user.firstName;
-		lastName = user.lastName;
-		age = String(user.age ?? '');
+		university = user.university;
+		pointDifferential = String(user.pointDifferential ?? '');
+		championshipYear = String(user.championshipYear ?? '');
 		editingId = user._id;
 	};
 
@@ -150,23 +150,25 @@
 				<div class="grid gap-3 sm:grid-cols-3">
 					<input
 						class="w-full rounded border px-3 py-2 text-sm"
-						placeholder="First name"
+						placeholder="University"
 						required
-						bind:value={firstName}
+						bind:value={university}
 					/>
 					<input
 						class="w-full rounded border px-3 py-2 text-sm"
-						placeholder="Last name"
-						required
-						bind:value={lastName}
-					/>
-					<input
-						class="w-full rounded border px-3 py-2 text-sm"
-						placeholder="Age"
+						placeholder="Point Differential"
 						type="number"
 						min="0"
 						required
-						bind:value={age}
+						bind:value={pointDifferential}
+					/>
+					<input
+						class="w-full rounded border px-3 py-2 text-sm"
+						placeholder="Championship Year"
+						type="number"
+						min="0"
+						required
+						bind:value={championshipYear}
 					/>
 				</div>
 				<div class="mt-3 flex gap-2">
@@ -206,8 +208,9 @@
 					{#each users as user}
 						<li class="flex items-center justify-between px-4 py-3">
 							<div>
-								<p class="text-sm font-medium">{user.firstName} {user.lastName}</p>
-								<p class="text-xs text-slate-500">Age: {user.age}</p>
+								<p class="text-sm font-medium">{user.university}</p>
+								<p class="text-xs text-slate-500">Point Differential: {user.pointDifferential}</p>
+								<p class="text-xs text-slate-500">Championship Year: {user.championshipYear}</p>
 							</div>
 							<div class="flex gap-2">
 								<button

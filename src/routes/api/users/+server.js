@@ -10,7 +10,7 @@ export async function GET() {
 
 export async function POST({ request }) {
 	await connectToDatabase();
-	const { firstName, lastName, age } = await request.json();
-	const user = await User.create({ firstName, lastName, age });
+	const { university, pointDifferential, championshipYear } = await request.json();
+	const user = await User.create({ university, pointDifferential, championshipYear });
 	return json(user, { status: 201 });
 }
